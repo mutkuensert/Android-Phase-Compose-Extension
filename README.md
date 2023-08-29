@@ -41,17 +41,19 @@ implementation files('libs/phasecomposeextension-release.aar')
 
 ```kotlin
 @Composable
-fun TvShowDetails(
+private fun TvShowDetails(
     phase: Phase<TvShowDetails>,
     loadTvCastIfSuccessful: () -> Unit
 ) {
     phase.Execute(
         onLoading = { Loading() },
-        onSuccess = {
-            TvDetailsItem(data)
+        onSuccess = { //it: TvShowDetails
+            TvDetailsItem(it)
             LaunchedEffect(Unit) { loadTvCastIfSuccessful() }
         },
-        onError = { LocalContext.current.showToastIfNotNull(message) })
+        onError = { //it: Phase.Error<TvShowDetails>
+            LocalContext.current.showToastIfNotNull(it.message)
+        })
 }
 ```
 
